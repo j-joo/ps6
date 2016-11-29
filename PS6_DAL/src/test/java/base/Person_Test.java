@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -51,6 +52,107 @@ public class Person_Test {
 		
 	}
 	
-	
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+	}
 
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void addPersonTest() {
+		
+		System.out.println(person1);
+		PersonDomainModel testPerson;
+		testPerson = PersonDAL.getPerson(person1.getPersonID());
+		System.out.println(testPerson);
+		assertNull("This person shouldn't be listed here", testPerson);
+		
+		PersonDAL.addPerson(person1);
+		testPerson = PersonDAL.getPerson(person1.getPersonID());
+		assertTrue("This person could not be found", testPerson != null);
+		
+		PersonDAL.deletePerson(person1.getPersonID());
+		testPerson = PersonDAL.getPerson(person1.getPersonID());
+		assertNull("This person shouldn't be listed here", testPerson);
+	}
+
+	@Test
+	public void getPersonTest() {
+		PersonDomainModel testPerson;
+		testPerson = PersonDAL.getPerson(person1.getPersonID());
+		assertNull("This person shouldn't be listed here", testPerson);
+		
+		PersonDAL.addPerson(person1);
+		testPerson = PersonDAL.getPerson(person1.getPersonID());
+		assertTrue("This person could not be found", testPerson != null);
+			
+		PersonDAL.deletePerson(person1.getPersonID());
+		testPerson = PersonDAL.getPerson(person1.getPersonID());
+		assertNull("This person shouldn't be listed here", testPerson);
+	}
+	
+	@Test
+	public void deletePersonTest() {
+		
+		PersonDomainModel testPerson;
+		testPerson = PersonDAL.getPerson(person1.getPersonID());
+		assertNull("This person shouldn't be listed here", testPerson);
+		
+		PersonDAL.addPerson(person1);
+		testPerson = PersonDAL.getPerson(person1.getPersonID());
+		assertTrue("This person could not be found", testPerson != null);
+		
+		PersonDAL.deletePerson(person1.getPersonID());
+		testPerson = PersonDAL.getPerson(person1.getPersonID());
+		assertNull("This person shouldn't be listed here", testPerson);
+	}
+
+	@Test
+	public void getPersonsTest() {
+		PersonDomainModel testPerson;
+		testPerson = PersonDAL.getPerson(person1.getPersonID());
+		assertNull("This person shouldn't be listed here", testPerson);
+		
+		PersonDAL.addPerson(person1);
+		testPerson = PersonDAL.getPerson(person1.getPersonID());
+		assertTrue("This person could not be found", testPerson != null);
+	
+		ArrayList<PersonDomainModel> persons = PersonDAL.getPersons();
+		System.out.println(persons.size() + " records retrieved");
+		for (PersonDomainModel p : persons) {
+			System.out.println(p);
+		}
+		
+		PersonDAL.deletePerson(person1.getPersonID());
+		testPerson = PersonDAL.getPerson(person1.getPersonID());
+		assertNull("This person shouldn't be listed here", testPerson);
+	}
+
+	@Test
+	public void updatePersonTest() {		
+		
+		PersonDomainModel testPerson;
+		testPerson = PersonDAL.getPerson(person1.getPersonID());
+		assertNull("This person shouldn't be listed here", testPerson);
+		
+		PersonDAL.addPerson(person1);
+		testPerson = PersonDAL.getPerson(person1.getPersonID());
+		assertTrue("This person could not be found", testPerson != null);
+		
+		String newFirstName = "RyRy";
+		testPerson.setFirstName(newFirstName);
+		PersonDAL.updatePerson(testPerson);
+		testPerson = PersonDAL.getPerson(testPerson.getPersonID());
+		assertTrue("First name did not change",testPerson.getFirstName().equals(newFirstName));
+		
+		PersonDAL.deletePerson(person1.getPersonID());
+		testPerson = PersonDAL.getPerson(person1.getPersonID());
+		assertNull("This person shouldn't be listed here", testPerson);
+	}
 }

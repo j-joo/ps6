@@ -110,31 +110,26 @@ public class PersonOverviewController {
      */
     @FXML
     private void handleDeletePerson() {
-        int selectedIndex = personTable.getSelectionModel().getSelectedIndex();
-        Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
-        if (selectedIndex >= 0) {
-
-        	
-        	UUID perID = selectedPerson.getPersonID();
-        	System.out.println("Try to delete: " + perID.toString());
-        	
-        	//TODO: Delete the person, call the deletePerson(perID) method
-        	//		in the DAL
-        	 
-            personTable.getItems().remove(selectedIndex);
-            
-            
-        } else {
-            // Nothing selected.
-            Alert alert = new Alert(AlertType.WARNING);
-            alert.initOwner(mainApp.getPrimaryStage());
-            alert.setTitle("No Selection");
-            alert.setHeaderText("No Person Selected");
-            alert.setContentText("Please select a person in the table.");
-            
-            alert.showAndWait();
-        }
-    }
+    	 int selectedIndex = personTable.getSelectionModel().getSelectedIndex();
+         if (selectedIndex >= 0) {
+         	
+         	UUID perID = UUID.fromString("1234");
+         	
+         	PersonDAL.deletePerson(perID); 
+             personTable.getItems().remove(selectedIndex);
+             
+             
+         } else {
+             // Nothing selected.
+             Alert alert = new Alert(AlertType.WARNING);
+             alert.initOwner(mainApp.getPrimaryStage());
+             alert.setTitle("No Selection");
+             alert.setHeaderText("No Person Selected");
+             alert.setContentText("Please select a person in the table.");
+             
+             alert.showAndWait();
+         }
+     }
     
     /**
      * Called when the user clicks the new button. Opens a dialog to edit
@@ -146,19 +141,7 @@ public class PersonOverviewController {
         boolean okClicked = mainApp.showPersonEditDialog(tempPerson);
         if (okClicked) {
         	//PS6 - Calling the addPerson method
-        	PersonDomainModel per = new PersonDomainModel();
-        	per.setPersonID(tempPerson.getPersonID());
-        	per.setFirstName(tempPerson.getFirstName());
-        	per.setMiddleName(tempPerson.getMiddleName());
-        	per.setLastName(tempPerson.getLastName());
-        	per.setCity(tempPerson.getCity());
-        	per.setStreet(tempPerson.getStreet());
-        	per.setPostalCode(tempPerson.getPostalCode());
-        	per.setBirthday(tempPerson.getBirthday());
-        	
-        	//TODO: Delete the person, call the addPerson(perID) method
-        	//		in the DAL
-        	        	
+        	PersonDAL.addPerson(tempPerson);        	
             mainApp.getPersonData().add(tempPerson);
         }
     }
@@ -169,31 +152,15 @@ public class PersonOverviewController {
      */
     @FXML
     private void handleEditPerson() {
-        Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
-        if (selectedPerson != null) {
-            boolean okClicked = mainApp.showPersonEditDialog(selectedPerson);
-            if (okClicked) {
-            	
-            	//PS6 - Calling the updatePerson method
-            	PersonDomainModel updatePer = new PersonDomainModel();            	
-            	updatePer.setPersonID(selectedPerson.getPersonID());
-            	updatePer.setFirstName(selectedPerson.getFirstName());
-            	updatePer.setMiddleName(selectedPerson.getMiddleName());
-            	updatePer.setLastName(selectedPerson.getLastName());
-            	updatePer.setCity(selectedPerson.getCity());
-            	updatePer.setStreet(selectedPerson.getStreet());
-            	updatePer.setPostalCode(selectedPerson.getPostalCode());
-            	updatePer.setBirthday(selectedPerson.getBirthday());
-            	
-
-            	
-            	//TODO: Delete the person, call the updatePerson(perID) method
-            	//		in the DAL
-            	
-            	
-                showPersonDetails(selectedPerson);
-                mainApp.RefreshPersonTable();
-            }
+    	 Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
+         if (selectedPerson != null) {
+             boolean okClicked = mainApp.showPersonEditDialog(selectedPerson);
+             if (okClicked) {
+             	
+             	//PS6 - Calling the updatePerson method
+             	PersonDAL.updatePerson(selectedPerson);  
+                 showPersonDetails(selectedPerson);
+             }
 
         } else {
             // Nothing selected.
